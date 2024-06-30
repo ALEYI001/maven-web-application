@@ -3,7 +3,7 @@ pipeline{
    //options{}
    //triggers{}
    tools {
-      maven 'maven3.9.7'
+      maven 'maven3.9.6'
    }
    stages{
     stage('1.CloneCode'){
@@ -18,9 +18,8 @@ pipeline{
        sh "echo UnitTesting must passed for artifacts to be created"
        sh "mvn clean package"
       }
-}
-    }
 
+    }
     stage('3.CodeQuality'){
       steps{
          //sh "mvn sonar:sonar"
@@ -40,11 +39,11 @@ pipeline{
       steps{
         sh "echo Deployment is ready for the client review"
         sh "echo using deploy to container plugin" 
-        deploy adapters: [tomcat9(credentialsId: 'tomcat-credentials', path: '', url: 'http://13.40.107.47:8080/')], contextPath: null, war: 'target/*war'
+        deploy adapters: [tomcat9(credentialsId: 'tomcat-credentials', path: '', url: 'http://13.40.107.47:8080')], contextPath: null, war: 'target/*war'
 
       }
     }
-   
+    /*
     stage('6.ManualApproval'){
       steps{
        sh "echo Please Review and confirm within 5 days"
@@ -52,12 +51,12 @@ pipeline{
        input message: 'Application ready for deployment, Please review and approve'     
        }
  
-      }
+      }*/
     }
     stage('7.Deploy2Prod'){
       steps{
         sh "echo application reviewed, approved and ready for the market" 
-        deploy adapters: [tomcat9(credentialsId: 'tomcat-credentials', path: '', url: 'http://13.40.107.47:8080/')], contextPath: null, war: 'target/*war'
+        deploy adapters: [tomcat9(credentialsId: 'tomcat-credentials', path: '', url: 'http://172.31.30.76:8080/')], contextPath: null, war: 'target/*war'
 
       }
     }
